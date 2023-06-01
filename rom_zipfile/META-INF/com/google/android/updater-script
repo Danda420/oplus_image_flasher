@@ -1,0 +1,78 @@
+assert(getprop("ro.product.device") == "apollon" || getprop("ro.build.product") == "apollon" || 
+       getprop("ro.product.device") == "apollo" || getprop("ro.build.product") == "apollo" || 
+       getprop("ro.product.device") == "apollopro" || getprop("ro.build.product") == "apollopro" || abort("E3004: This package is for device: apollon,apollo,apollopro; this device is " + getprop("ro.product.device") + "."););
+	   
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");
+ui_print(" "); 
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");
+ui_print(" "); 
+ui_print(" "); 
+ui_print(" ");
+ui_print("   ___            ___         _      _  __ _____  ");
+ui_print("  / _ \ ___ _ __ | _ \___ _ _| |_ __/ |/  \_   _| ");
+ui_print(" | (_) / -_) '  \|  _/ _ \ '_|  _(_-< | () || |   ");
+ui_print("  \___/\___|_|_|_|_| \___/_|  \__/__/_|\__/ |_|   ");
+ui_print("                                                  ");
+ui_print("               by Danda | @Dandaaaa               ");
+ui_print("                                                  ");
+ui_print("=================================================="); 
+ui_print(" ");
+ui_print("  Device           : Mi 10T / Mi 10T Pro   ");
+ui_print("  Rom              : ColorOS 13.1            ");
+ui_print("  Rom Version      : F.67                  ");
+ui_print("  Android Version  : 13                    ");
+ui_print("  Security Patch   : 2023-04-05            ");
+ui_print("  Port from        : OnePlus 8T     ");
+ui_print(" ");
+ui_print("==================================================");
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");
+ui_print("Flashing Super...");
+show_progress(0.900000, 0);
+block_image_update("/dev/block/bootdevice/by-name/super", package_extract_file("super.transfer.list"), "super.new.dat.br", "super.patch.dat) ||
+  abort("E1001: Failed to update partition.");
+ui_print(" ");  
+ui_print("Flashing oem_cust...");
+block_image_update("/dev/block/bootdevice/by-name/cust", package_extract_file("cust.transfer.list"), "cust.new.dat.br", "cust.patch.dat") ||
+  abort("ERROR: Failed to update partition.");
+ui_print(" ");
+ui_print("Flashing oplus images...");
+package_extract_file("META-INF/com/oemports10t/toybox", "/data/toybox");
+package_extract_file("META-INF/com/oemports10t/oemports10t.sh", "/data/oemports10t.sh");
+package_extract_file("oemports10t/oplus/oplus.tar.gz", "/data/oplus.tar.gz");
+set_metadata_recursive("/data/toybox", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
+set_metadata_recursive("/data/oemports10t.sh", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
+run_program("/data/oemports10t.sh", "");
+ui_print(" "); 
+ui_print("Flashing Images...");
+package_extract_file("images/boot.img", "/dev/block/bootdevice/by-name/boot");
+show_progress(0.100000, 10);
+package_extract_file("images/dtbo.img", "/dev/block/bootdevice/by-name/dtbo");
+package_extract_file("images/vbmeta.img", "/dev/block/bootdevice/by-name/vbmeta");
+package_extract_file("images/oneplus.img", "/dev/block/bootdevice/by-name/logo");
+package_extract_file("images/vbmeta_system.img", "/dev/block/bootdevice/by-name/vbmeta_system");
+set_progress(1.000000);
+
+run_program("/sbin/sh", "-c", "rm -f /data/cache/command");
+run_program("/sbin/sh", "-c", "rm -rf /data/system/package_cache");
+run_program("/sbin/sh", "-c", "rm -rf /data/data/com.google.android.gms/app_dg_cache");
+run_program("/sbin/sh", "-c", "rm -f /data/data/com.google.android.gms/databases/dg.db");
+
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");	   
+ui_print("==================================================");
+ui_print("+            ROM Succesfully Flashed!            +");
+ui_print("==================================================");
+ui_print(" ");
+ui_print(" ");
+ui_print(" ");

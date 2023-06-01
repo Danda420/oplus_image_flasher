@@ -1,0 +1,51 @@
+on fs
+    mkdir /mnt/vendor/my_bigball 0755 system system
+    mkdir /mnt/vendor/my_carrier 0755 system system
+    mkdir /mnt/vendor/my_company 0755 system system
+    mkdir /mnt/vendor/my_engineering 0755 system system
+    mkdir /mnt/vendor/my_heytap 0755 system system
+    mkdir /mnt/vendor/my_manifest 0755 system system
+    mkdir /mnt/vendor/my_preload 0755 system system
+    mkdir /mnt/vendor/my_product 0755 system system
+    mkdir /mnt/vendor/my_region 0755 system system
+    mkdir /mnt/vendor/my_stock 0755 system system
+    
+    mount none /my_bigball /mnt/vendor/my_bigball bind rec
+    mount none /my_carrier /mnt/vendor/my_carrier bind rec
+    mount none /my_company /mnt/vendor/my_company bind rec
+    mount none /my_engineering /mnt/vendor/my_engineering bind rec
+    mount none /my_heytap /mnt/vendor/my_heytap bind rec
+    mount none /my_manifest /mnt/vendor/my_manifest bind rec
+    mount none /my_preload /mnt/vendor/my_preload bind rec
+    mount none /my_product /mnt/vendor/my_product bind rec
+    mount none /my_region /mnt/vendor/my_region bind rec
+    mount none /my_stock /mnt/vendor/my_stock  bind rec
+    
+on late-fs
+    mount ext4 loop@/data/my_bigball.img /my_bigball ro
+    mount ext4 loop@/data/my_carrier.img /my_carrier ro
+    mount ext4 loop@/data/my_company.img /my_company ro
+    mount ext4 loop@/data/my_engineering.img /my_engineering ro
+    mount ext4 loop@/data/my_heytap.img /my_heytap ro
+    mount ext4 loop@/data/my_preload.img /my_preload ro
+    mount ext4 loop@/data/my_region.img /my_region ro
+    mount ext4 loop@/data/my_stock.img /my_stock ro
+
+    restorecon_recursive /my_bigball
+    restorecon_recursive /my_carrier
+    restorecon_recursive /my_company
+    restorecon_recursive /my_engineering
+    restorecon_recursive /my_heytap
+    restorecon_recursive /my_manifest
+    restorecon_recursive /my_preload
+    restorecon_recursive /my_product
+    restorecon_recursive /my_region
+    restorecon_recursive /my_stock
+
+on post-fs-data
+    mount overlay overlay /product/app lowerdir=/my_bigball/app:/my_heytap/app:/my_product/app:/my_stock/app:/product/app,context=u:object_r:system_file:s0
+    mount overlay overlay /product/priv-app lowerdir=/my_bigball/priv-app:/my_heytap/priv-app:/my_product/priv-app:/my_stock/priv-app:/product/priv-app,context=u:object_r:system_file:s0
+    mount overlay overlay /product/lib lowerdir=/my_product/lib:/product/lib,context=u:object_r:system_file:s0
+    mount overlay overlay /product/lib64 lowerdir=/my_product/lib64:/product/lib64,context=u:object_r:system_file:s0
+    mount overlay overlay /product/overlay lowerdir=/my_product/overlay:/product/overlay,context=u:object_r:system_file:s0
+
