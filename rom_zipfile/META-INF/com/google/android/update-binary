@@ -1,1 +1,1 @@
-use your own device update binary that supports package_extract_file, set_metadata_recursive, run_program (usually aosp update binary)
+use your own device update binary
